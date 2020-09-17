@@ -1,23 +1,34 @@
+import { Request, Response } from 'express';
 import { CategoryDTO } from '../entities/Category';
 
 export class CategoryController {
-  findCategoryById(data: { id: number }) {
-    console.log('Finding category by id.');
+  findCategoryById(request: Request, response: Response) {
+    response.status(200).send({
+      message: `Finding a message with the ID: ${request.body.id}`,
+    });
   }
 
-  listAllCategories() {
-    console.log('Listing categories from DB.');
+  listAllCategories(request: Request, response: Response) {
+    response.status(200).send({
+      message: `Finding all categories.`,
+    });
   }
 
-  listCategoriesByType(data: { type: number }) {
-    console.log('Finding categories by type.');
+  listCategoriesByType(request: Request, response: Response) {
+    response.status(200).send({
+      message: `Listing the categories of a certain type`,
+    });
   }
 
-  addNewCategory(data: CategoryDTO) {
-    console.log(data);
+  addNewCategory(request: Request, response: Response) {
+    response.status(200).send({
+      message: `Adding a category with the name: ${request.body.name}`,
+    });
   }
 
-  removeCategory(data: { id: number }) {
-    console.log('Removing category');
+  removeCategory(request: Request, response: Response) {
+    response.status(200).send({
+      message: `Deleting a category.`,
+    });
   }
 }

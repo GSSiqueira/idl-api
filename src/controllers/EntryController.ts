@@ -1,23 +1,36 @@
+import { Request, Response } from 'express';
+
 import { EntryDTO } from '../entities/Entry';
 
 export class EntryController {
-  findEntryById(data: { id: number }) {
-    console.log('Finding the entry');
+  findEntryById(request: Request, response: Response) {
+    response.status(200).send({
+      message: `Finding an entry with the ID: ${request.body.id}`,
+    });
   }
 
-  listEntriesByDate(data: { date: string }) {
-    console.log(new Date(data.date));
+  listDailyEntriesByDate(request: Request, response: Response) {
+    response.status(200).send({
+      message: `Finding entries with the Date: ${request.body.date}`,
+    });
   }
 
-  listRegularExpenseEntriesByMonth(data: { month: string }) {
-    console.log(new Date());
+  listRegularExpenseEntriesByMonth(request: Request, response: Response) {
+    response.status(200).send({
+      message: `Finding entries with the month: ${request.body.month}`,
+    });
   }
 
-  addNewEntry(entryData: EntryDTO) {
-    console.log(entryData);
+  addNewEntry(request: Request, response: Response) {
+    response.status(200).send({
+      message: `Finding an entry with the value: ${request.body.value}`,
+    });
+    console.log('Adding new entry.');
   }
 
-  removeEntry(data: { id: number }) {
-    console.log('Removing entry');
+  removeEntry(request: Request, response: Response) {
+    response.status(200).send({
+      message: `Removing an entry with the ID: ${request.body.id}`,
+    });
   }
 }
