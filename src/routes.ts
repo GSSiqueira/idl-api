@@ -8,10 +8,12 @@ const categoryController = new CategoryController();
 
 router.get('/entradas', entryController.listDailyEntriesByDate);
 router.post('/entradas', entryController.addNewEntry);
+router.delete('/entradas', entryController.removeEntry);
 
 router.get('/fixos', entryController.listRegularExpenseEntriesByMonth);
 
 router.get('/categorias', categoryController.listAllCategories);
 router.post('/categorias', categoryController.addNewCategory);
+router.delete('/categorias', categoryController.removeCategory);
 
 export default router;

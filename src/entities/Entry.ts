@@ -1,12 +1,22 @@
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+
 import { Category } from './Category';
 
+@Entity()
 export class Entry {
+  @PrimaryGeneratedColumn()
   id: number;
-  date: Date;
+
+  @Column()
+  date: string;
+
+  @Column('double')
   value: number;
+
+  @ManyToOne((type) => Category, (category) => category.entries)
   category: Category;
 
-  constructor(id: number, date: Date, value: number, category: Category) {
+  constructor(id: number, date: string, value: number, category: Category) {
     this.id = id;
     this.date = date;
     this.value = value;
