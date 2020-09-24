@@ -1,12 +1,22 @@
 import { Request, Response } from 'express';
-
-import { EntryDTO } from '../entities/Entry';
+import { getCustomRepository, Repository } from 'typeorm';
+import { Entry } from '../entities/Entry';
+import { IEntryRepository } from '../repositories/IEntryRepository';
+import { TOEntryRepository } from '../repositories/implementations/TOEntryRepository';
 
 export class EntryController {
   findEntryById(request: Request, response: Response) {
-    response.status(200).send({
-      message: `Finding an entry with the ID: ${request.body.id}`,
-    });
+    getCustomRepository(TOEntryRepository)
+      .getEntryById(request.params.entryId)
+      .then((entry) => {
+        let entryJSON = JSON.stringify(entry);
+        response.status(200).send(entryJSON);
+      })
+      .catch((error) => {
+        response.status(400).send({
+          message: 'Entry not found!',
+        });
+      });
   }
 
   listDailyEntriesByDate(request: Request, response: Response) {

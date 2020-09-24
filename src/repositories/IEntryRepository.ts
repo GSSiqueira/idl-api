@@ -1,10 +1,11 @@
 import { Entry, EntryDTO } from '../entities/Entry';
 
 export interface IEntryRepository {
-  getEntryById(id: number): Promise<Entry>;
+  getEntryById(id: number): Promise<Entry | undefined>;
+  /*   
   getDailyEntriesByDate(date: Date): Promise<Entry[]>;
   getRegularExpenseEntriesByMonth(month: Date): Promise<Entry[]>;
 
   addNewEntry(data: EntryDTO): Promise<void>;
-  removeEntry(id: number): Promise<void>;
+  removeEntry(id: number): Promise<void>; */
 }

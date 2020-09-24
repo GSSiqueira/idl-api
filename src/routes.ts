@@ -7,6 +7,7 @@ const entryController = new EntryController();
 const categoryController = new CategoryController();
 
 router.get('/entradas', entryController.listDailyEntriesByDate);
+router.get('/entradas/:entryId', entryController.findEntryById);
 router.post('/entradas', entryController.addNewEntry);
 router.delete('/entradas', entryController.removeEntry);
 
