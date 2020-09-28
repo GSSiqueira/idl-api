@@ -1,5 +1,4 @@
-import { EntityRepository, getRepository, Repository } from 'typeorm';
-import { Category } from '../../entities/Category';
+import { EntityRepository, Repository } from 'typeorm';
 import { Entry, EntryDTO } from '../../entities/Entry';
 
 @EntityRepository(Entry)
@@ -24,9 +23,19 @@ export class TOEntryRepository extends Repository<Entry> {
       .where('entry.date = :dateToFilter', { dateToFilter })
       .andWhere('category.type <> :type', { type: 3 })
       .getMany();
-    // return this.find({ date: dateToFilter });
   }
-  /*
-  getRegularExpenseEntriesByMonth(month: Date): Promise<Entry[]> {}
-  removeEntry(id: number): Promise<void> {} */
+  getRegularExpenseEntriesByMonth(month: string): Promise<Entry[]> {
+    return this.createQueryBuilder('entry')
+      .leftJoinAndSelect('entry.category', 'category')
+      .where('MONTH(entry.date) = MONTH(:month)', { month })
+      .andWhere('category.type = :type', { type: 3 })
+      .getMany();
+  }
+
+  removeEntry(id: number): Promise<any> {
+    return this.createQueryBuilder('entry')
+      .delete()
+      .where('id = :id', { id })
+      .execute();
+  }
 }
