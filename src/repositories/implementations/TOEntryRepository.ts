@@ -1,17 +1,32 @@
-import { response } from 'express';
-import { EntityRepository, Repository } from 'typeorm';
-import { Entry } from '../../entities/Entry';
-import { IEntryRepository } from '../IEntryRepository';
+import { EntityRepository, getRepository, Repository } from 'typeorm';
+import { Category } from '../../entities/Category';
+import { Entry, EntryDTO } from '../../entities/Entry';
 
 @EntityRepository(Entry)
 export class TOEntryRepository extends Repository<Entry> {
   getEntryById(id: number) {
-    return this.findOne(id);
+    return this.findOneOrFail(id);
   }
 
-  /*   getDailyEntriesByDate(date: Date): Promise<Entry[]> {}
-  getRegularExpenseEntriesByMonth(month: Date): Promise<Entry[]> {}
+  addNewEntry(newEntryData: EntryDTO): Promise<Entry> {
+    const newEntry = new Entry();
+    newEntry.date = newEntryData.date;
+    newEntry.time = newEntryData.time;
+    newEntry.value = newEntryData.value;
+    newEntry.categoryId = newEntryData.categoryId;
 
-  addNewEntry(data: EntryDTO): Promise<void> {}
+    return this.save(newEntry);
+  }
+
+  getDailyEntriesByDate(dateToFilter: string): Promise<Entry[]> {
+    return this.createQueryBuilder('entry')
+      .leftJoinAndSelect('entry.category', 'category')
+      .where('entry.date = :dateToFilter', { dateToFilter })
+      .andWhere('category.type <> :type', { type: 3 })
+      .getMany();
+    // return this.find({ date: dateToFilter });
+  }
+  /*
+  getRegularExpenseEntriesByMonth(month: Date): Promise<Entry[]> {}
   removeEntry(id: number): Promise<void> {} */
 }

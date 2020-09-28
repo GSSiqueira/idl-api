@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
-import { getCustomRepository, Repository } from 'typeorm';
-import { Entry } from '../entities/Entry';
-import { IEntryRepository } from '../repositories/IEntryRepository';
+import { getCustomRepository } from 'typeorm';
+import { EntryDTO } from '../entities/Entry';
 import { TOEntryRepository } from '../repositories/implementations/TOEntryRepository';
 
 export class EntryController {
@@ -20,9 +19,23 @@ export class EntryController {
   }
 
   listDailyEntriesByDate(request: Request, response: Response) {
-    response.status(200).send({
-      message: `Finding entries with the Date: ${request.body.date}`,
-    });
+    getCustomRepository(TOEntryRepository)
+      .getDailyEntriesByDate(request.body.date)
+      .then((entry) => {
+        if (entry.length) {
+          let entryJSON = JSON.stringify(entry);
+          response.status(200).send(entryJSON);
+        } else {
+          response.status(400).send({
+            message: 'No entries found!',
+          });
+        }
+      })
+      .catch((error) => {
+        response.status(400).send({
+          message: 'Error while searching the entries.',
+        });
+      });
   }
 
   listRegularExpenseEntriesByMonth(request: Request, response: Response) {
@@ -32,10 +45,17 @@ export class EntryController {
   }
 
   addNewEntry(request: Request, response: Response) {
-    response.status(200).send({
-      message: `Finding an entry with the value: ${request.body.value}`,
-    });
-    console.log('Adding new entry.');
+    getCustomRepository(TOEntryRepository)
+      .addNewEntry(request.body as EntryDTO)
+      .then((entry) => {
+        let entryJSON = JSON.stringify(entry);
+        response.status(200).send(entryJSON);
+      })
+      .catch((error) => {
+        response.status(400).send({
+          message: 'Error while adding new entry.',
+        });
+      });
   }
 
   removeEntry(request: Request, response: Response) {

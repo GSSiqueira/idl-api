@@ -16,13 +16,6 @@ export class Category {
 
   @OneToMany((type) => Entry, (entry) => entry.category)
   entries: Entry[];
-
-  constructor(id: number, name: string, type: number, entries: Entry[]) {
-    this.id = id;
-    this.name = name;
-    this.type = type;
-    this.entries = entries;
-  }
 }
 
 export interface CategoryDTO {

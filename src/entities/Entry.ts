@@ -1,4 +1,10 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 import { Category } from './Category';
 
@@ -7,25 +13,31 @@ export class Entry {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column('date')
   date: string;
+
+  @Column('time')
+  time: string;
 
   @Column('double')
   value: number;
 
-  @ManyToOne((type) => Category, (category) => category.entries)
-  category: Category;
+  @Column({
+    name: 'categoryId',
+  })
+  categoryId: number;
 
-  constructor(id: number, date: string, value: number, category: Category) {
-    this.id = id;
-    this.date = date;
-    this.value = value;
-    this.category = category;
-  }
+  @ManyToOne((type) => Category, (category) => category.entries, {
+    eager: true,
+    cascade: true,
+  })
+  @JoinTable()
+  category: Category;
 }
 
 export interface EntryDTO {
   date: string;
+  time: string;
   value: number;
   categoryId: number;
 }
