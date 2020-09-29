@@ -29,7 +29,7 @@ export class Entry {
 
   @ManyToOne((type) => Category, (category) => category.entries, {
     eager: true,
-    cascade: true,
+    onDelete: 'CASCADE',
   })
   @JoinTable()
   category: Category;

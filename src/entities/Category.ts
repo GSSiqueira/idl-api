@@ -14,7 +14,9 @@ export class Category {
   @Column('int')
   type: number;
 
-  @OneToMany((type) => Entry, (entry) => entry.category)
+  @OneToMany((type) => Entry, (entry) => entry.category, {
+    cascade: true,
+  })
   entries: Entry[];
 }
 

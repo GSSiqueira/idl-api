@@ -3,10 +3,6 @@ import { Entry, EntryDTO } from '../../entities/Entry';
 
 @EntityRepository(Entry)
 export class TOEntryRepository extends Repository<Entry> {
-  getEntryById(id: number) {
-    return this.findOneOrFail(id);
-  }
-
   addNewEntry(newEntryData: EntryDTO): Promise<Entry> {
     const newEntry = new Entry();
     newEntry.date = newEntryData.date;
@@ -17,6 +13,10 @@ export class TOEntryRepository extends Repository<Entry> {
     return this.save(newEntry);
   }
 
+  getEntryById(id: number) {
+    return this.findOneOrFail(id);
+  }
+
   getDailyEntriesByDate(dateToFilter: string): Promise<Entry[]> {
     return this.createQueryBuilder('entry')
       .leftJoinAndSelect('entry.category', 'category')
@@ -24,6 +24,7 @@ export class TOEntryRepository extends Repository<Entry> {
       .andWhere('category.type <> :type', { type: 3 })
       .getMany();
   }
+
   getRegularExpenseEntriesByMonth(month: string): Promise<Entry[]> {
     return this.createQueryBuilder('entry')
       .leftJoinAndSelect('entry.category', 'category')

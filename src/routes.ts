@@ -15,7 +15,8 @@ router.get('/fixos', entryController.listRegularExpenseEntriesByMonth);
 
 router.get('/categorias', categoryController.listAllCategories);
 router.get('/categorias/:categoryId', categoryController.findCategoryById);
+router.get('/categorias/type/:type', categoryController.listCategoriesByType);
 router.post('/categorias', categoryController.addNewCategory);
-router.delete('/categorias', categoryController.removeCategory);
+router.delete('/categorias/:categoryId', categoryController.removeCategory);
 
 export default router;

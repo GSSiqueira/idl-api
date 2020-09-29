@@ -27,26 +27,57 @@ export class CategoryController {
       })
       .catch((error) => {
         response.status(400).send({
-          message: 'Category not found!',
+          message: 'No Categories were found.',
         });
       });
   }
 
   listCategoriesByType(request: Request, response: Response) {
-    response.status(200).send({
-      message: `Listing the categories of a certain type`,
-    });
+    getCustomRepository(TOCategoryRepository)
+      .getCategoriesByType(request.params.type)
+      .then((categories) => {
+        if (categories.length) {
+          let categoriesJSON = JSON.stringify(categories);
+          response.status(200).send(categoriesJSON);
+        } else {
+          response.status(400).send({
+            message: 'No categories found for this type.',
+          });
+        }
+      })
+      .catch((error) => {
+        response.status(400).send({
+          message: 'Error filtering categories by type.',
+        });
+      });
   }
 
   addNewCategory(request: Request, response: Response) {
-    response.status(200).send({
-      message: `Adding a category with the name: ${request.body.name}`,
-    });
+    getCustomRepository(TOCategoryRepository)
+      .addNewCategory(request.body as CategoryDTO)
+      .then((category) => {
+        let categoryJSON = JSON.stringify(category);
+        response.status(200).send(categoryJSON);
+      })
+      .catch((error) => {
+        response.status(400).send({
+          message: 'Error adding new category.',
+        });
+      });
   }
 
   removeCategory(request: Request, response: Response) {
-    response.status(200).send({
-      message: `Deleting a category.`,
-    });
+    getCustomRepository(TOCategoryRepository)
+      .removeCategory(request.params.categoryId)
+      .then((category) => {
+        let categoryJSON = JSON.stringify(category);
+        response.status(200).send(categoryJSON);
+      })
+      .catch((error) => {
+        response.status(400).send({
+          message: 'Category to delete not found!',
+          error,
+        });
+      });
   }
 }
