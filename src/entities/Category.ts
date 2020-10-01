@@ -24,3 +24,10 @@ export interface CategoryDTO {
   name: string;
   type: number;
 }
+
+export enum CategoryType {
+  EntradaCaixa = 0,
+  FechamentoCaixa = 1,
+  DespesaDiaria = 2,
+  DespesaFixa = 3,
+}

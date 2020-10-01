@@ -6,12 +6,12 @@ const router = Router();
 const entryController = new EntryController();
 const categoryController = new CategoryController();
 
-router.get('/entradas', entryController.listDailyEntriesByDate);
+router.get('/entradas/data/:date', entryController.listDailyEntriesByDate);
 router.get('/entradas/:entryId', entryController.findEntryById);
 router.post('/entradas', entryController.addNewEntry);
 router.delete('/entradas/:entryId', entryController.removeEntry);
 
-router.get('/fixos', entryController.listRegularExpenseEntriesByMonth);
+router.get('/fixos/:month', entryController.listRegularExpenseEntriesByMonth);
 
 router.get('/categorias', categoryController.listAllCategories);
 router.get('/categorias/:categoryId', categoryController.findCategoryById);

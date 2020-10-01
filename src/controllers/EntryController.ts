@@ -6,7 +6,7 @@ import { TOEntryRepository } from '../repositories/implementations/TOEntryReposi
 export class EntryController {
   findEntryById(request: Request, response: Response) {
     getCustomRepository(TOEntryRepository)
-      .getEntryById(request.params.entryId)
+      .getEntryById(parseInt(request.params.entryId))
       .then((entry) => {
         let entryJSON = JSON.stringify(entry);
         response.status(200).send(entryJSON);
@@ -20,7 +20,7 @@ export class EntryController {
 
   listDailyEntriesByDate(request: Request, response: Response) {
     getCustomRepository(TOEntryRepository)
-      .getDailyEntriesByDate(request.body.date)
+      .getDailyEntriesByDate(request.params.date)
       .then((entry) => {
         if (entry.length) {
           let entryJSON = JSON.stringify(entry);
@@ -40,7 +40,7 @@ export class EntryController {
 
   listRegularExpenseEntriesByMonth(request: Request, response: Response) {
     getCustomRepository(TOEntryRepository)
-      .getRegularExpenseEntriesByMonth(request.body.month)
+      .getRegularExpenseEntriesByMonth(request.params.month)
       .then((entry) => {
         if (entry.length) {
           let entryJSON = JSON.stringify(entry);
@@ -74,7 +74,7 @@ export class EntryController {
 
   removeEntry(request: Request, response: Response) {
     getCustomRepository(TOEntryRepository)
-      .removeEntry(request.params.entryId)
+      .removeEntry(parseInt(request.params.entryId))
       .then((entry) => {
         let entryJSON = JSON.stringify(entry);
         response.status(200).send(entryJSON);
