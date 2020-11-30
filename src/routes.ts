@@ -1,10 +1,14 @@
 import { Router } from 'express';
 import { CategoryController } from './controllers/CategoryController';
 import { EntryController } from './controllers/EntryController';
+import UserController from './controllers/UserController';
 
 const router = Router();
 const entryController = new EntryController();
 const categoryController = new CategoryController();
+const userController = new UserController();
+
+router.post('/auth', userController.authenticateUser);
 
 router.get('/entradas/data/:date', entryController.listDailyEntriesByDate);
 router.get('/entradas/:entryId', entryController.findEntryById);
