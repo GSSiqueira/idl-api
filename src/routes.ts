@@ -10,6 +10,8 @@ const userController = new UserController();
 
 router.post('/auth', userController.authenticateUser);
 
+router.post('/newuser', userController.addNewUser);
+
 router.get('/entradas/data/:date', entryController.listDailyEntriesByDate);
 router.get('/entradas/:entryId', entryController.findEntryById);
 router.post('/entradas', entryController.addNewEntry);

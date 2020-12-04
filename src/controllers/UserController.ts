@@ -1,14 +1,56 @@
 import { Request, Response } from 'express';
 import { getCustomRepository } from 'typeorm';
 import { TOUserRepository } from '../repositories/implementations/TOUserRepository';
+import { generateAuthToken } from '../services/authentication/authToken';
+import {
+  hashPassword,
+  validatePassword,
+} from '../services/encryption/hashPassword';
 
 export default class UserController {
-  authenticateUser(request: Request, response: Response) {
+  async authenticateUser(request: Request, response: Response) {
     getCustomRepository(TOUserRepository)
-      .validateUser(request.body.username, request.body.password)
+      .getUserByUsername(request.body.username)
       .then((user) => {
         let userJSON = JSON.stringify(user);
-        response.status(200).send(userJSON);
+        validatePassword(request.body.password, user.password).then(
+          (isValid) => {
+            if (isValid) {
+              response.status(200).send({
+                message: 'User Logged In!',
+                username: user.username,
+                isAdmin: user.isAdmin,
+                authtoken: generateAuthToken(
+                  user.username,
+                  user.isAdmin,
+                  86400
+                ),
+              });
+            } else {
+              response.status(401).send({
+                message: 'Invalid Password!',
+              });
+            }
+          }
+        );
+      })
+      .catch((error) => {
+        response.status(401).send({
+          message: 'Invalid Username!',
+        });
+      });
+  }
+
+  async addNewUser(request: Request, response: Response) {
+    getCustomRepository(TOUserRepository)
+      .addNewUser({
+        username: request.body.username,
+        password: await hashPassword(request.body.password),
+        email: request.body.email,
+        isAdmin: request.body.isAdmin,
+      })
+      .then((data) => {
+        response.status(200).send(data);
       })
       .catch((error) => {
         response.status(400).send({
@@ -17,7 +59,5 @@ export default class UserController {
       });
   }
 
-  addNewUser(request: Request, response: Response) {}
-
-  removeUser(request: Request, response: Response) {}
+  async removeUser(request: Request, response: Response) {}
 }
