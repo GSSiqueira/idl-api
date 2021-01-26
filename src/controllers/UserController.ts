@@ -1,11 +1,11 @@
-import { Request, Response } from 'express';
-import { getCustomRepository } from 'typeorm';
-import { TOUserRepository } from '../repositories/implementations/TOUserRepository';
-import { generateAuthToken } from '../services/authentication/authToken';
+import { Request, Response } from "express";
+import { getCustomRepository } from "typeorm";
+import { TOUserRepository } from "../repositories/implementations/TOUserRepository";
+import { generateAuthToken } from "../services/authentication/authToken";
 import {
   hashPassword,
   validatePassword,
-} from '../services/encryption/hashPassword';
+} from "../services/encryption/hashPassword";
 
 export default class UserController {
   async authenticateUser(request: Request, response: Response) {
@@ -17,7 +17,7 @@ export default class UserController {
           (isValid) => {
             if (isValid) {
               response.status(200).send({
-                message: 'User Logged In!',
+                message: "User Logged In!",
                 username: user.username,
                 isAdmin: user.isAdmin,
                 authtoken: generateAuthToken(
@@ -28,7 +28,7 @@ export default class UserController {
               });
             } else {
               response.status(401).send({
-                message: 'Invalid Password!',
+                message: "Invalid Password!",
               });
             }
           }
@@ -36,7 +36,7 @@ export default class UserController {
       })
       .catch((error) => {
         response.status(401).send({
-          message: 'Invalid Username!',
+          message: "Invalid Username!",
         });
       });
   }
@@ -47,7 +47,7 @@ export default class UserController {
         username: request.body.username,
         password: await hashPassword(request.body.password),
         email: request.body.email,
-        isAdmin: request.body.isAdmin,
+        isAdmin: JSON.parse(request.body.isAdmin),
       })
       .then((data) => {
         response.status(200).send(data);
