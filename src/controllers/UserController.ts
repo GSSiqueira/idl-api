@@ -32,11 +32,7 @@ export default class UserController {
           message: "User Logged In!",
           username: userFromDB.username,
           isAdmin: userFromDB.isAdmin,
-          authtoken: generateAuthToken(
-            userFromDB.username,
-            userFromDB.isAdmin,
-            86400
-          ),
+          authtoken: generateAuthToken(userFromDB.username, 86400),
         });
       }
     }

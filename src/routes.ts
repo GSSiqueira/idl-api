@@ -1,4 +1,6 @@
 import { Router } from "express";
+
+import authMiddleware from "../src/middlewares/authMiddleware";
 import { CategoryController } from "./controllers/CategoryController";
 import { EntryController } from "./controllers/EntryController";
 import UserController from "./controllers/UserController";
@@ -8,6 +10,7 @@ const entryController = new EntryController();
 const categoryController = new CategoryController();
 const userController = new UserController();
 
+router.get("/protected", authMiddleware, categoryController.listAllCategories);
 //User
 router.post("/auth", userController.authenticateUser);
 router.post("/newuser", userController.addNewUser);
