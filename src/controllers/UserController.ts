@@ -9,6 +9,40 @@ import {
 
 export default class UserController {
   async authenticateUser(request: Request, response: Response) {
+    const { username, password } = request.body;
+    const userFromDB = await getCustomRepository(
+      TOUserRepository
+    ).getUserByUsername(username);
+
+    if (!userFromDB) {
+      response.status(401).send({
+        message: "Invalid Username!",
+      });
+    } else {
+      const isPasswordValid = await validatePassword(
+        password,
+        userFromDB.password
+      );
+      if (!isPasswordValid) {
+        response.status(401).send({
+          message: "Invalid Password!",
+        });
+      } else {
+        response.status(200).send({
+          message: "User Logged In!",
+          username: userFromDB.username,
+          isAdmin: userFromDB.isAdmin,
+          authtoken: generateAuthToken(
+            userFromDB.username,
+            userFromDB.isAdmin,
+            86400
+          ),
+        });
+      }
+    }
+  }
+
+  /*  async authenticateUser(request: Request, response: Response) {
     getCustomRepository(TOUserRepository)
       .getUserByUsername(request.body.username)
       .then((user) => {
@@ -35,11 +69,15 @@ export default class UserController {
         );
       })
       .catch((error) => {
+        console.debug(
+          "UserController",
+          "Invalid Username!!!" + request.body.username
+        );
         response.status(401).send({
           message: "Invalid Username!",
         });
       });
-  }
+  } */
 
   async addNewUser(request: Request, response: Response) {
     getCustomRepository(TOUserRepository)

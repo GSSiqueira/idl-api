@@ -1,5 +1,5 @@
-import { Entity, EntityRepository, Repository } from 'typeorm';
-import { User, UserDTO } from '../../entities/User';
+import { Entity, EntityRepository, Repository } from "typeorm";
+import { User, UserDTO } from "../../entities/User";
 
 @EntityRepository(User)
 export class TOUserRepository extends Repository<User> {
@@ -18,7 +18,7 @@ export class TOUserRepository extends Repository<User> {
   }
 
   getUserByUsername(username: string) {
-    return this.findOneOrFail({ username });
+    return this.findOne({ username });
   }
 
   validateUser(username: string, password: string) {
