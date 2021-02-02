@@ -27,7 +27,7 @@ export default function authMiddleware(
       return next();
     } catch {
       response.status(401).send({
-        message: "User not logged in!",
+        message: "Invalid AuthToken!",
       });
     }
   }

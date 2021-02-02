@@ -10,23 +10,49 @@ const entryController = new EntryController();
 const categoryController = new CategoryController();
 const userController = new UserController();
 
+//Teste
 router.get("/protected", authMiddleware, categoryController.listAllCategories);
+
 //User
 router.post("/auth", userController.authenticateUser);
-router.post("/newuser", userController.addNewUser);
+router.post("/newuser", authMiddleware, userController.addNewUser);
 
 //Entries
-router.get("/entradas/data/:date", entryController.listDailyEntriesByDate);
-router.get("/entradas/:entryId", entryController.findEntryById);
-router.post("/entradas", entryController.addNewEntry);
-router.delete("/entradas/:entryId", entryController.removeEntry);
-router.get("/fixos/:month", entryController.listRegularExpenseEntriesByMonth);
+router.get(
+  "/entradas/data/:date",
+  authMiddleware,
+  entryController.listDailyEntriesByDate
+);
+router.get("/entradas/:entryId", authMiddleware, entryController.findEntryById);
+router.post("/entradas", authMiddleware, entryController.addNewEntry);
+router.delete(
+  "/entradas/:entryId",
+  authMiddleware,
+  entryController.removeEntry
+);
+router.get(
+  "/fixos/:month",
+  authMiddleware,
+  entryController.listRegularExpenseEntriesByMonth
+);
 
 //Categories
-router.get("/categorias", categoryController.listAllCategories);
-router.get("/categorias/:categoryId", categoryController.findCategoryById);
-router.get("/categorias/type/:type", categoryController.listCategoriesByType);
-router.post("/categorias", categoryController.addNewCategory);
-router.delete("/categorias/:categoryId", categoryController.removeCategory);
+router.get("/categorias", authMiddleware, categoryController.listAllCategories);
+router.get(
+  "/categorias/:categoryId",
+  authMiddleware,
+  categoryController.findCategoryById
+);
+router.get(
+  "/categorias/type/:type",
+  authMiddleware,
+  categoryController.listCategoriesByType
+);
+router.post("/categorias", authMiddleware, categoryController.addNewCategory);
+router.delete(
+  "/categorias/:categoryId",
+  authMiddleware,
+  categoryController.removeCategory
+);
 
 export default router;
