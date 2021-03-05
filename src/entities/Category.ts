@@ -1,5 +1,5 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Entry } from './Entry';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Entry } from "./Entry";
 
 @Entity()
 export class Category {
@@ -11,8 +11,10 @@ export class Category {
   })
   name: string;
 
-  @Column('int')
-  type: number;
+  @Column({
+    length: 100,
+  })
+  type: string;
 
   @OneToMany((type) => Entry, (entry) => entry.category, {
     cascade: true,
@@ -22,12 +24,5 @@ export class Category {
 
 export interface CategoryDTO {
   name: string;
-  type: number;
-}
-
-export enum CategoryType {
-  EntradaCaixa = 0,
-  FechamentoCaixa = 1,
-  DespesaDiaria = 2,
-  DespesaFixa = 3,
+  type: string;
 }

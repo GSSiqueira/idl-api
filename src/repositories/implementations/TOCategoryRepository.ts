@@ -1,5 +1,5 @@
-import { EntityRepository, Repository } from 'typeorm';
-import { Category, CategoryDTO } from '../../entities/Category';
+import { EntityRepository, Repository } from "typeorm";
+import { Category, CategoryDTO } from "../../entities/Category";
 
 @EntityRepository(Category)
 export class TOCategoryRepository extends Repository<Category> {
@@ -18,14 +18,14 @@ export class TOCategoryRepository extends Repository<Category> {
     return this.find();
   }
 
-  getCategoriesByType(type: number): Promise<Category[]> {
+  getCategoriesByType(type: string): Promise<Category[]> {
     return this.find({ type });
   }
 
   removeCategory(id: number): Promise<any> {
-    return this.createQueryBuilder('category')
+    return this.createQueryBuilder("category")
       .delete()
-      .where('id = :id', { id })
+      .where("id = :id", { id })
       .execute();
   }
 }

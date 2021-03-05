@@ -23,7 +23,6 @@ export default function authMiddleware(
 
     try {
       const tokenData = jwt.verify(authToken, "INSERT-SECRET-HERE");
-      console.debug("AuthMiddleware", tokenData);
       return next();
     } catch {
       response.status(401).send({
