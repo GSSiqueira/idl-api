@@ -38,7 +38,7 @@ export class EntryController {
       });
   }
 
-  listRegularExpenseEntriesByMonth(request: Request, response: Response) {
+  listEntriesByMonth(request: Request, response: Response) {
     getCustomRepository(TOEntryRepository)
       .getEntriesByMonth(request.params.month)
       .then((entry) => {

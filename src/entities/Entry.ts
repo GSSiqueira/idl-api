@@ -4,32 +4,32 @@ import {
   JoinTable,
   ManyToOne,
   PrimaryGeneratedColumn,
-} from 'typeorm';
+} from "typeorm";
 
-import { Category } from './Category';
+import { Category } from "./Category";
 
 @Entity()
 export class Entry {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column('date')
+  @Column("date")
   date: string;
 
-  @Column('time')
-  time: string;
+  @Column({ type: "timestamp", nullable: true })
+  time: Date;
 
-  @Column('double')
+  @Column("double")
   value: number;
 
   @Column({
-    name: 'categoryId',
+    name: "categoryId",
   })
   categoryId: number;
 
   @ManyToOne((type) => Category, (category) => category.entries, {
     eager: true,
-    onDelete: 'CASCADE',
+    onDelete: "CASCADE",
   })
   @JoinTable()
   category: Category;
@@ -37,7 +37,6 @@ export class Entry {
 
 export interface EntryDTO {
   date: string;
-  time: string;
   value: number;
   categoryId: number;
 }

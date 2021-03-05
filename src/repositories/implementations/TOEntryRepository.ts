@@ -6,7 +6,6 @@ export class TOEntryRepository extends Repository<Entry> {
   addNewEntry(newEntryData: EntryDTO): Promise<Entry> {
     const newEntry = new Entry();
     newEntry.date = newEntryData.date;
-    newEntry.time = newEntryData.time;
     newEntry.value = newEntryData.value;
     newEntry.categoryId = newEntryData.categoryId;
 
@@ -31,7 +30,7 @@ export class TOEntryRepository extends Repository<Entry> {
     return (
       this.createQueryBuilder("entry")
         .leftJoinAndSelect("entry.category", "category")
-        .where("MONTH(entry.date) = MONTH(:month)", { month })
+        .where("MONTH(entry.date) = MONTH(:month)", { month }) //Needs to check the year also
         //.andWhere("category.type <> :type", { type: "Receitas" })
         .getMany()
     );

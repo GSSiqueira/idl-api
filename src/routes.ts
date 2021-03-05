@@ -31,9 +31,9 @@ router.delete(
   entryController.removeEntry
 );
 router.get(
-  "/fixos/:month",
+  "/mensal/:month",
   authMiddleware,
-  entryController.listRegularExpenseEntriesByMonth
+  entryController.listEntriesByMonth
 );
 
 //Categories
