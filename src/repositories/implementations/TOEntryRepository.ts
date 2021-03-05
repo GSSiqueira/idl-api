@@ -1,5 +1,5 @@
-import { EntityRepository, Repository } from 'typeorm';
-import { Entry, EntryDTO } from '../../entities/Entry';
+import { EntityRepository, Repository } from "typeorm";
+import { Entry, EntryDTO } from "../../entities/Entry";
 
 @EntityRepository(Entry)
 export class TOEntryRepository extends Repository<Entry> {
@@ -17,26 +17,30 @@ export class TOEntryRepository extends Repository<Entry> {
     return this.findOneOrFail(id);
   }
 
-  getDailyEntriesByDate(dateToFilter: string): Promise<Entry[]> {
-    return this.createQueryBuilder('entry')
-      .leftJoinAndSelect('entry.category', 'category')
-      .where('entry.date = :dateToFilter', { dateToFilter })
-      .andWhere('category.type <> :type', { type: 3 })
-      .getMany();
+  getEntriesByDate(dateToFilter: string): Promise<Entry[]> {
+    return (
+      this.createQueryBuilder("entry")
+        .leftJoinAndSelect("entry.category", "category")
+        .where("entry.date = :dateToFilter", { dateToFilter })
+        //.andWhere("category.type <> :type", { type: "Receitas" })
+        .getMany()
+    );
   }
 
-  getRegularExpenseEntriesByMonth(month: string): Promise<Entry[]> {
-    return this.createQueryBuilder('entry')
-      .leftJoinAndSelect('entry.category', 'category')
-      .where('MONTH(entry.date) = MONTH(:month)', { month })
-      .andWhere('category.type = :type', { type: 3 })
-      .getMany();
+  getEntriesByMonth(month: string): Promise<Entry[]> {
+    return (
+      this.createQueryBuilder("entry")
+        .leftJoinAndSelect("entry.category", "category")
+        .where("MONTH(entry.date) = MONTH(:month)", { month })
+        //.andWhere("category.type <> :type", { type: "Receitas" })
+        .getMany()
+    );
   }
 
   removeEntry(id: number): Promise<any> {
-    return this.createQueryBuilder('entry')
+    return this.createQueryBuilder("entry")
       .delete()
-      .where('id = :id', { id })
+      .where("id = :id", { id })
       .execute();
   }
 }

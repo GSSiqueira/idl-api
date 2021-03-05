@@ -1,7 +1,7 @@
-import { Request, Response } from 'express';
-import { getCustomRepository } from 'typeorm';
-import { EntryDTO } from '../entities/Entry';
-import { TOEntryRepository } from '../repositories/implementations/TOEntryRepository';
+import { Request, Response } from "express";
+import { getCustomRepository } from "typeorm";
+import { EntryDTO } from "../entities/Entry";
+import { TOEntryRepository } from "../repositories/implementations/TOEntryRepository";
 
 export class EntryController {
   findEntryById(request: Request, response: Response) {
@@ -13,47 +13,47 @@ export class EntryController {
       })
       .catch((error) => {
         response.status(400).send({
-          message: 'Entry not found!',
+          message: "Entry not found!",
         });
       });
   }
 
   listDailyEntriesByDate(request: Request, response: Response) {
     getCustomRepository(TOEntryRepository)
-      .getDailyEntriesByDate(request.params.date)
+      .getEntriesByDate(request.params.date)
       .then((entry) => {
         if (entry.length) {
           let entryJSON = JSON.stringify(entry);
           response.status(200).send(entryJSON);
         } else {
           response.status(400).send({
-            message: 'No entries found!',
+            message: "No entries found!",
           });
         }
       })
       .catch((error) => {
         response.status(400).send({
-          message: 'Error while searching the entries.',
+          message: "Error while searching the entries.",
         });
       });
   }
 
   listRegularExpenseEntriesByMonth(request: Request, response: Response) {
     getCustomRepository(TOEntryRepository)
-      .getRegularExpenseEntriesByMonth(request.params.month)
+      .getEntriesByMonth(request.params.month)
       .then((entry) => {
         if (entry.length) {
           let entryJSON = JSON.stringify(entry);
           response.status(200).send(entryJSON);
         } else {
           response.status(400).send({
-            message: 'No entries found!',
+            message: "No entries found!",
           });
         }
       })
       .catch((error) => {
         response.status(400).send({
-          message: 'Error while searching the entries.',
+          message: "Error while searching the entries.",
         });
       });
   }
@@ -67,7 +67,7 @@ export class EntryController {
       })
       .catch((error) => {
         response.status(400).send({
-          message: 'Error while adding new entry.',
+          message: "Error while adding new entry.",
         });
       });
   }
@@ -81,7 +81,7 @@ export class EntryController {
       })
       .catch((error) => {
         response.status(400).send({
-          message: 'Problem removing entry.',
+          message: "Problem removing entry.",
         });
       });
   }
