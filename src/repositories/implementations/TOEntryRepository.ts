@@ -26,11 +26,12 @@ export class TOEntryRepository extends Repository<Entry> {
     );
   }
 
-  getEntriesByMonth(month: string): Promise<Entry[]> {
+  getEntriesByMonth(date: string): Promise<Entry[]> {
     return (
       this.createQueryBuilder("entry")
         .leftJoinAndSelect("entry.category", "category")
-        .where("MONTH(entry.date) = MONTH(:month)", { month }) //Needs to check the year also
+        .where("MONTH(entry.date) = MONTH(:date)", { date })
+        .andWhere("YEAR(entry.date) = YEAR(:date)", { date }) //Needs to check the year also
         //.andWhere("category.type <> :type", { type: "Receitas" })
         .getMany()
     );

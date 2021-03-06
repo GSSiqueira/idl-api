@@ -30,11 +30,7 @@ router.delete(
   authMiddleware,
   entryController.removeEntry
 );
-router.get(
-  "/mensal/:month",
-  authMiddleware,
-  entryController.listEntriesByMonth
-);
+router.get("/mensal/:date", authMiddleware, entryController.listEntriesByMonth);
 
 //Categories
 router.get("/categorias", authMiddleware, categoryController.listAllCategories);
@@ -44,7 +40,7 @@ router.get(
   categoryController.findCategoryById
 );
 router.get(
-  "/categorias/type/:type",
+  "/categorias/tipo/:type",
   authMiddleware,
   categoryController.listCategoriesByType
 );

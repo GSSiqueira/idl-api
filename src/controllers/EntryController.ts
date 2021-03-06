@@ -40,7 +40,7 @@ export class EntryController {
 
   listEntriesByMonth(request: Request, response: Response) {
     getCustomRepository(TOEntryRepository)
-      .getEntriesByMonth(request.params.month)
+      .getEntriesByMonth(request.params.date)
       .then((entry) => {
         if (entry.length) {
           let entryJSON = JSON.stringify(entry);
