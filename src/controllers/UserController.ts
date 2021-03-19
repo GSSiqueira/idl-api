@@ -38,43 +38,6 @@ export default class UserController {
     }
   }
 
-  /*  async authenticateUser(request: Request, response: Response) {
-    getCustomRepository(TOUserRepository)
-      .getUserByUsername(request.body.username)
-      .then((user) => {
-        let userJSON = JSON.stringify(user);
-        validatePassword(request.body.password, user.password).then(
-          (isValid) => {
-            if (isValid) {
-              response.status(200).send({
-                message: "User Logged In!",
-                username: user.username,
-                isAdmin: user.isAdmin,
-                authtoken: generateAuthToken(
-                  user.username,
-                  user.isAdmin,
-                  86400
-                ),
-              });
-            } else {
-              response.status(401).send({
-                message: "Invalid Password!",
-              });
-            }
-          }
-        );
-      })
-      .catch((error) => {
-        console.debug(
-          "UserController",
-          "Invalid Username!!!" + request.body.username
-        );
-        response.status(401).send({
-          message: "Invalid Username!",
-        });
-      });
-  } */
-
   async addNewUser(request: Request, response: Response) {
     getCustomRepository(TOUserRepository)
       .addNewUser({

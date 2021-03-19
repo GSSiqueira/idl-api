@@ -3,13 +3,14 @@ import { Entry, EntryDTO } from "../../entities/Entry";
 
 @EntityRepository(Entry)
 export class TOEntryRepository extends Repository<Entry> {
-  addNewEntry(newEntryData: EntryDTO): Promise<Entry> {
+  async addNewEntry(newEntryData: EntryDTO): Promise<Entry> {
     const newEntry = new Entry();
     newEntry.date = newEntryData.date;
     newEntry.value = newEntryData.value;
     newEntry.categoryId = newEntryData.categoryId;
 
-    return this.save(newEntry);
+    const savedEntry = await this.save(newEntry);
+    return this.findOneOrFail(savedEntry.id);
   }
 
   getEntryById(id: number) {
