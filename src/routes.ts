@@ -18,19 +18,19 @@ router.post("/auth", userController.authenticateUser);
 router.post("/newuser", authMiddleware, userController.addNewUser);
 
 //Entries
+router.get("/entradas/:entryId", authMiddleware, entryController.findEntryById);
 router.get(
   "/entradas/data/:date",
   authMiddleware,
   entryController.listDailyEntriesByDate
 );
-router.get("/entradas/:entryId", authMiddleware, entryController.findEntryById);
+router.get("/mensal/:date", authMiddleware, entryController.listEntriesByMonth);
 router.post("/entradas", authMiddleware, entryController.addNewEntry);
 router.delete(
   "/entradas/:entryId",
   authMiddleware,
   entryController.removeEntry
 );
-router.get("/mensal/:date", authMiddleware, entryController.listEntriesByMonth);
 
 //Categories
 router.get("/categorias", authMiddleware, categoryController.listAllCategories);

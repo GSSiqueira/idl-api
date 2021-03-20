@@ -59,6 +59,26 @@ export class EntryController {
   }
 
   addNewEntry(request: Request, response: Response) {
+    const { date, value, categoryId } = request.body;
+
+    if (value <= 0 || value > 1000000) {
+      response.status(400).send({
+        message: "Valor inválido.",
+      });
+      return;
+    }
+    if (!categoryId) {
+      response.status(400).send({
+        message: "Categoria inválida.",
+      });
+      return;
+    }
+    if (!date) {
+      response.status(400).send({
+        message: "Data inválida.",
+      });
+      return;
+    }
     getCustomRepository(TOEntryRepository)
       .addNewEntry(request.body as EntryDTO)
       .then((entry) => {

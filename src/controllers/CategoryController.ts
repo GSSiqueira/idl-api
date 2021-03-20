@@ -1,7 +1,7 @@
-import { Request, Response } from 'express';
-import { getCustomRepository } from 'typeorm';
-import { CategoryDTO } from '../entities/Category';
-import { TOCategoryRepository } from '../repositories/implementations/TOCategoryRepository';
+import { Request, Response } from "express";
+import { getCustomRepository } from "typeorm";
+import { CategoryDTO } from "../entities/Category";
+import { TOCategoryRepository } from "../repositories/implementations/TOCategoryRepository";
 
 export class CategoryController {
   findCategoryById(request: Request, response: Response) {
@@ -13,7 +13,7 @@ export class CategoryController {
       })
       .catch((error) => {
         response.status(400).send({
-          message: 'Category not found!',
+          message: "Categoria não encontrada.",
         });
       });
   }
@@ -27,7 +27,7 @@ export class CategoryController {
       })
       .catch((error) => {
         response.status(400).send({
-          message: 'No Categories were found.',
+          message: "Não foi possivel realizar a busca.",
         });
       });
   }
@@ -41,18 +41,33 @@ export class CategoryController {
           response.status(200).send(categoriesJSON);
         } else {
           response.status(400).send({
-            message: 'No categories found for this type.',
+            message: "Nenhuma categoria encontrada para esse tipo.",
           });
         }
       })
       .catch((error) => {
         response.status(400).send({
-          message: 'Error filtering categories by type.',
+          message: "Não foi possivel realizar a busca.",
         });
       });
   }
 
   addNewCategory(request: Request, response: Response) {
+    const { name, type } = request.body;
+
+    if (name.length == 0) {
+      response.status(400).send({
+        message: "Nome inválido.",
+      });
+      return;
+    }
+    if (type.length == 0) {
+      response.status(400).send({
+        message: "Tipo inválido.",
+      });
+      return;
+    }
+
     getCustomRepository(TOCategoryRepository)
       .addNewCategory(request.body as CategoryDTO)
       .then((category) => {
@@ -61,7 +76,7 @@ export class CategoryController {
       })
       .catch((error) => {
         response.status(400).send({
-          message: 'Error adding new category.',
+          message: "Erro ao adicionar a categoria.",
         });
       });
   }
@@ -75,7 +90,7 @@ export class CategoryController {
       })
       .catch((error) => {
         response.status(400).send({
-          message: 'Category to delete not found!',
+          message: "Não foi possivel deletar a categoria.",
           error,
         });
       });
